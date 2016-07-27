@@ -1,0 +1,42 @@
+#include <cstdio>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include <queue>
+using namespace std;
+int dp[200005];
+int mid = 100002;
+int n;
+int main()
+{
+    dp[mid] = mid;
+    int c,w;
+    scanf("%d",&n);
+    int l = mid,r = mid;
+
+    for(int i=0;i<n;i++){
+        scanf("%d%d",&c,&w);
+        l = min(l,l+c);
+        r = max(r,r+c);
+
+        if(c>0){
+            for(int j=r;j>=l;j--){
+                if(dp[j-c])
+                dp[j] = max(dp[j],dp[j-c]+w);
+            }
+        }else {
+            for(int j=l;j<=r;j++){
+                if(dp[j-c])
+                dp[j] = max(dp[j],dp[j-c]+w);
+            }
+        }
+    }
+
+    int res = 0;
+    for(int i=mid;i<=200005;i++){
+        if(dp[i]>=mid) res = max(res,dp[i]+i-mid-mid);
+    }
+    printf("%d\n",res);
+    return 0;
+
+}
